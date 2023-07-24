@@ -1,0 +1,9 @@
+Django==3.2.3
+psycopg2-binary==2.9.3
+Pillow==9.0.0
+PyYAML==6.0
+aiogram==2.25.1
+python-dotenv==0.21.1
+redis==4.6.0
+colorama==0.4.6
+nicelog==0.3
