@@ -1,10 +1,10 @@
 from django.db import models
-# from django.contrib.auth import get_user_model
 
 
 class Profile(models.Model):
-    tg_user_id = models.IntegerField(
-        verbose_name='ID пользователя в Telegram'
+    tg_user_id = models.PositiveIntegerField(
+        verbose_name='ID пользователя в Telegram',
+        unique=True,
     )
     name = models.TextField(
         verbose_name='Имя пользователя'

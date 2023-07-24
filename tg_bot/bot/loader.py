@@ -2,7 +2,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
 
-from config import BOT_TOKEN, bot_logger, redis_host, redis_port
+from .config import BOT_TOKEN, bot_logger, redis_host, redis_port
 
 
 bot_logger.info("Logger initialized")
