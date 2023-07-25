@@ -3,7 +3,7 @@ from aiogram import executor
 
 from tg_bot.bot.config import bot_logger
 from tg_bot.bot.loader import dp
-from tg_bot.bot.handlers import default
+from tg_bot.bot import handlers
 
 
 class Command(BaseCommand):
@@ -13,14 +13,3 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         bot_logger.info('Запуск бота')
         executor.start_polling(dp, skip_updates=True)
-
-# if __name__ == '__main__':
-#     bot_logger.info('Запуск бота')
-#     executor.start_polling(dp, skip_updates=True)
-
-
-
-
-
-
-

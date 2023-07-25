@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup
 
 
-def reply_keyboards(data: list, columns: int = 1) -> ReplyKeyboardMarkup:
+def reply_keyboards(data: list[str], columns: int = 2) -> ReplyKeyboardMarkup:
     """
     Универсальная reply клавиатура
     Функция получает список, в котором находится текст для каждой кнопки, и

@@ -1,6 +1,8 @@
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
-class User(StatesGroup):
-    test: State = State()
+class StateUser(StatesGroup):
+    category_menu: State = State()
+    subcategory_menu: State = State()
+    choice_product: State = State()
     main_menu: State = State()

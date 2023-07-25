@@ -19,7 +19,10 @@ bot_logger = loggers['BotLogger']
 redis_host = os.getenv("REDIS_HOST")
 redis_port = os.getenv("REDIS_PORT")
 
-
 """Links"""
 link_group = os.getenv("LINK_GROUP")
 link_channel = os.getenv("LINK_CHANNEL")
+
+"""Settings Paginator"""
+per_page_categories = 5
+per_page_subcategories = 4
