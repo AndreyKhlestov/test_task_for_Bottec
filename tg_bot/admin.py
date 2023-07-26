@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Profile, Category, Subcategory, Product
+from .models import Profile, Category, Subcategory, Product, Order, OrderItem
 
 
 @admin.register(Profile)
@@ -25,4 +25,14 @@ class SubcategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'subcategory', 'description', 'image')
+    list_display = ('name', 'subcategory', 'price')
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('profile', 'total_cost', 'payment_status')
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('product', 'quantity', 'total_cost', 'quantity')
