@@ -24,6 +24,10 @@ class Profile(models.Model):
         verbose_name_plural = 'Профили'
 
     def basket(self):
+        """
+        Получение корзины пользователя.
+        Корзиной будет считаться тот Orders, который еще не оплачен (такой заказ у пользователя может быть только один).
+        """
         # Проверяем, есть ли у пользователя незавершенный заказ (с payment_status=False)
         existing_cart = self.orders.filter(payment_status=False).first()
 
@@ -49,7 +53,11 @@ class Category(models.Model):
 
 
 class Subcategory(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subcategories', verbose_name='Категория')
+    category = models.ForeignKey(Category,
+                                 on_delete=models.CASCADE,
+                                 related_name='subcategories',
+                                 verbose_name='Категория'
+                                 )
     name = models.CharField(max_length=64, verbose_name='Название подкатегории', unique=True)
 
     def __str__(self):
@@ -66,7 +74,7 @@ class Product(models.Model):
                                     related_name='products',
                                     verbose_name='Подкатегория'
                                     )
-    name = models.CharField(max_length=64, verbose_name='Название товара')
+    name = models.CharField(max_length=64, verbose_name='Название товара', unique=True)
     description = models.TextField(verbose_name='Описание товара')
     image = models.ImageField(upload_to='products/', verbose_name='Изображение товара')
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)], verbose_name='Цена')
@@ -104,9 +112,13 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Название товара')
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items',)
-    quantity = models.PositiveIntegerField(default=1, verbose_name='Количество товара')
+    product = models.ForeignKey(Product,
+                                on_delete=models.CASCADE,
+                                verbose_name='Название товара',
+                                related_name='order_items'
+                                )
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
+    quantity = models.PositiveIntegerField(default=1, verbose_name='Количество товара', validators=[MinValueValidator(1)])
     total_cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Общая стоимость')
 
     def save(self, *args, **kwargs):

@@ -26,3 +26,4 @@ link_channel = os.getenv("LINK_CHANNEL")
 """Settings Paginator"""
 per_page_categories = 5
 per_page_subcategories = 4
+per_page_delete_product = 6
