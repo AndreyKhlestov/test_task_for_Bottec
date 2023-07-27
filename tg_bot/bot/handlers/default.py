@@ -50,4 +50,10 @@ async def help(message: types.Message):
 
 @dp.message_handler(commands="test", state=["*"])
 async def test(message: types.Message):
-    await message.answer("Тест")
+    pass
+    # await message.answer("Тест")
+    # from tg_bot.models import Order
+    # from ..utils.work_with_xlsx_file import append_new_payments
+    # order = Order.objects.get(id=4)
+    # await append_new_payments(order)
+    # await message.answer("good")

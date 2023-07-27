@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 
 from tg_bot.bot.utils import setup_django_settings  # установка Django настроек
 from tg_bot.bot.utils.work_with_basket import del_product
+from tg_bot.bot.utils.work_with_xlsx_file import append_new_payments
 from tg_bot.bot.config import bot_logger, provider_token
 from tg_bot.bot.loader import dp, bot
 from tg_bot.bot.states.all_states import StateUser
@@ -71,6 +72,8 @@ async def start_enter_address(call: types.CallbackQuery, state: FSMContext):
     basket = Profile.objects.get(tg_user_id=call.from_user.id).basket()
     if basket.total_cost < 60:
         await call.answer("Заказ должен быть не меньше 60 руб.", show_alert=True)
+    elif basket.total_cost > 1000:
+        await call.answer("Заказ должен быть меньше 1000 руб, т.к. это тестовая оплата.", show_alert=True)
     else:
         await call.message.delete()
         address = basket.address
@@ -131,6 +134,8 @@ async def process_pay(message: types.Message):
     if payment_total_cost == order.total_cost*100:
         order.payment_status = True
         order.save()
+        await append_new_payments(order)
+
     else:
         text = f"Сумма заказа не сходится с оплаченной суммой (вместо {order.total_cost} оплачено " \
                f" {payment_total_cost/100} руб.)\n"

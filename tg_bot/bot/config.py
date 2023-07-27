@@ -32,3 +32,6 @@ per_page_delete_product = 6
 provider_token = os.getenv("PROVIDER_TOKEN")
 ukassa_secret_key = os.getenv("UKASSA_SECRET_KEY")
 shop_id = os.getenv("SHOP_ID")
+
+"""xlsx"""
+xlsx_file_name = os.getenv("XLSX_FILE_NAME")

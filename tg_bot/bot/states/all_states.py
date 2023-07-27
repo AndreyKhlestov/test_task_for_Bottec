@@ -10,5 +10,6 @@ class StateUser(StatesGroup):
     delete_products: State = State()
     enter_address: State = State()
     confirmation_address: State = State()
+
     # enter_quantity_product: State = State()
     # main_menu: State = State()

@@ -7,3 +7,5 @@ python-dotenv==0.21.1
 redis==4.6.0
 colorama==0.4.6
 nicelog==0.3
+openpyxl==3.1.2
+aiofiles==23.1.0
