@@ -27,3 +27,8 @@ link_channel = os.getenv("LINK_CHANNEL")
 per_page_categories = 5
 per_page_subcategories = 4
 per_page_delete_product = 6
+
+"""Settings UKassa"""
+provider_token = os.getenv("PROVIDER_TOKEN")
+ukassa_secret_key = os.getenv("UKASSA_SECRET_KEY")
+shop_id = os.getenv("SHOP_ID")

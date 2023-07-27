@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db.models import Sum
+from django.utils import timezone
 
 
 class Profile(models.Model):
@@ -92,12 +93,17 @@ class Order(models.Model):
     address = models.TextField(verbose_name='Адрес')
     payment_status = models.BooleanField(verbose_name='Статус оплаты', default=False)
     total_cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Стоимость всего заказа', default=0)
+    payment_datetime = models.DateTimeField(verbose_name='Дата и время оплаты', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
 
     def save(self, *args, **kwargs):
+        if self.payment_status and not self.payment_datetime:
+            # Если заказ оплачен, но дата/время оплаты еще не установлены, устанавливаем текущее время
+            self.payment_datetime = timezone.now()
+
         self.total_cost = self.order_items.aggregate(total_cost=Sum('total_cost'))['total_cost'] or 0
         if not self.payment_status:
             # Есть ли уже заказ с payment_status=False для этого профиля

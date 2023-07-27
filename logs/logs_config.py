@@ -6,8 +6,8 @@ level_log = {
     'debug': 10,
     'daemon': 15,
     'info': 20,
-    'event': 21,
     'warning': 30,
+    'error_pay': 31,
     'error': 40,
     'exception': 50,
 }
@@ -16,9 +16,9 @@ level_log = {
 level_color = {
     'debug': Fore.WHITE,
     'daemon': 15,
-    'event': Fore.CYAN,
     'info': Fore.GREEN,
     'warning': Fore.YELLOW,
+    'error_pay': Fore.CYAN,
     'error': Fore.MAGENTA,
     'exception': Fore.RED,
 }

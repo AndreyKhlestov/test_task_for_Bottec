@@ -8,6 +8,7 @@ class StateUser(StatesGroup):
 
     view_shopping_cart: State = State()
     delete_products: State = State()
-
+    enter_address: State = State()
+    confirmation_address: State = State()
     # enter_quantity_product: State = State()
     # main_menu: State = State()
