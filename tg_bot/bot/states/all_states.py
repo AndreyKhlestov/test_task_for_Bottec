@@ -11,5 +11,6 @@ class StateUser(StatesGroup):
     enter_address: State = State()
     confirmation_address: State = State()
 
-    # enter_quantity_product: State = State()
-    # main_menu: State = State()
+    faq: State = State()
+
+    # test: State = State()

@@ -48,12 +48,32 @@ async def help(message: types.Message):
     await message.answer("Для запуска или перезапуска бота напишите /start")
 
 
-@dp.message_handler(commands="test", state=["*"])
-async def test(message: types.Message):
-    pass
-    # await message.answer("Тест")
-    # from tg_bot.models import Order
-    # from ..utils.work_with_xlsx_file import append_new_payments
-    # order = Order.objects.get(id=4)
-    # await append_new_payments(order)
-    # await message.answer("good")
+# faq_list = {
+#     "Что такое бот?": "Бот (от англ. robot) — программа, способная автоматически выполнять различные действия.",
+#     "Как связаться с поддержкой?": "Вы можете связаться с нашей поддержкой по адресу support@example.com.",
+#     "Как оформить заказ?": "Для оформления заказа выберите товары из нашего каталога и перейдите в корзину для оформления заказа.",
+#     # Добавьте свои вопросы и ответы в этот словарь
+# }
+
+# from ..states.all_states import StateUser
+#
+#
+# @dp.message_handler(commands="test", state=["*"])
+# async def test(message: types.Message):
+#     await StateUser.test.set()
+#
+#
+# @dp.inline_handler(state=StateUser.test)
+# async def process_inline_query(query: InlineQuery):
+#     results = []
+#     for question, answer in faq_list.items():
+#         if query.query.lower() in question.lower():
+#             # Формируем ответ в формате InlineQueryResultArticle
+#             results.append(
+#                 InlineQueryResultArticle(
+#                     id=question,
+#                     title=question,
+#                     input_message_content=InputTextMessageContent(answer)
+#                 )
+#             )
+#     await query.answer(results)
