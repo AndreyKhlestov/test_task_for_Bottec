@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -82,7 +86,8 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB', 'online_store'),
         'USER': os.getenv('POSTGRES_USER', 'postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
+        # 'HOST': os.getenv('DB_HOST', 'localhost'),
+        'HOST': 'database',
         'PORT': os.getenv('DB_PORT', 5432)
     }
 }

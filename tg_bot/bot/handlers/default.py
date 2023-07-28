@@ -48,32 +48,9 @@ async def help(message: types.Message):
     await message.answer("Для запуска или перезапуска бота напишите /start")
 
 
-# faq_list = {
-#     "Что такое бот?": "Бот (от англ. robot) — программа, способная автоматически выполнять различные действия.",
-#     "Как связаться с поддержкой?": "Вы можете связаться с нашей поддержкой по адресу support@example.com.",
-#     "Как оформить заказ?": "Для оформления заказа выберите товары из нашего каталога и перейдите в корзину для оформления заказа.",
-#     # Добавьте свои вопросы и ответы в этот словарь
-# }
-
-# from ..states.all_states import StateUser
-#
-#
-# @dp.message_handler(commands="test", state=["*"])
-# async def test(message: types.Message):
-#     await StateUser.test.set()
-#
-#
-# @dp.inline_handler(state=StateUser.test)
-# async def process_inline_query(query: InlineQuery):
-#     results = []
-#     for question, answer in faq_list.items():
-#         if query.query.lower() in question.lower():
-#             # Формируем ответ в формате InlineQueryResultArticle
-#             results.append(
-#                 InlineQueryResultArticle(
-#                     id=question,
-#                     title=question,
-#                     input_message_content=InputTextMessageContent(answer)
-#                 )
-#             )
-#     await query.answer(results)
+@dp.message_handler(commands="test", state=["*"])
+async def test(message: types.Message):
+    await message.answer("test")
+    from tg_bot.models import TelegramMessage
+    a, created = TelegramMessage.objects.get_or_create(text="fsdfasfsadfasfasdfasdfasfas")
+    a.save()

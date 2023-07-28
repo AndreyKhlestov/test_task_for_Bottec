@@ -12,5 +12,3 @@ class StateUser(StatesGroup):
     confirmation_address: State = State()
 
     faq: State = State()
-
-    # test: State = State()

@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from decimal import Decimal
 from tg_bot.models import Profile, Product, OrderItem
 

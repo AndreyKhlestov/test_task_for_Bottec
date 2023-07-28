@@ -1,10 +1,13 @@
 from django.db import models
 from django.core.validators import MinValueValidator
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db.models import Sum
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+import asyncio
+
+from .bot.utils.send_message_all_users import send_message_to_all_users
 
 
 class Profile(models.Model):
@@ -137,3 +140,22 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} - {self.quantity} шт. по {self.product.price} руб."
+
+
+class TelegramMessage(models.Model):
+    text = models.TextField(verbose_name='Текст сообщения')
+    start_date_time = models.DateTimeField(verbose_name='Дата/время начала рассылки', auto_now_add=True)
+    end_date_time = models.DateTimeField(verbose_name='Дата/время завершения рассылки', blank=True, null=True)
+    send_status = models.BooleanField(verbose_name='Статус завершения отправки', default=False)
+
+    class Meta:
+        verbose_name = 'Рассылка'
+        verbose_name_plural = 'Рассылки'
+
+    def save(self, *args, **kwargs):
+        # if not self.send_status:
+        #     asyncio.run(send_message_to_all_users(str(self.text)))
+        if self.send_status and not self.end_date_time:
+            self.end_date_time = timezone.now()
+
+        super().save(*args, **kwargs)

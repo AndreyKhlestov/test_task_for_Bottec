@@ -21,8 +21,10 @@ faq_list = {
 async def start_faq(message: types.Message, state: FSMContext):
     """Запуск раздела FAQ"""
     await StateUser.faq.set()
-    await message.answer("Вы в разделе FAQ.\n"
-                         "Напишите ваш вопрос.")
+    bot_username = (await bot.get_me()).username
+    text = f"Вы в разделе FAQ.\nВведите @{bot_username} и после начните вводить ваш вопрос."
+
+    await bot.send_message(message.from_user.id, text, parse_mode=types.ParseMode.HTML)
 
 
 @dp.inline_handler(state=StateUser.faq)

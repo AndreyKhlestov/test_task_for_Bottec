@@ -15,9 +15,9 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 """Loggers"""
 bot_logger = loggers['BotLogger']
 
-"""Redis"""
-redis_host = os.getenv("REDIS_HOST")
-redis_port = os.getenv("REDIS_PORT")
+# """Redis"""
+# redis_host = os.getenv("REDIS_HOST")
+# redis_port = os.getenv("REDIS_PORT")
 
 """Links"""
 link_group = os.getenv("LINK_GROUP")

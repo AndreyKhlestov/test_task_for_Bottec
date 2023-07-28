@@ -1,0 +1,62 @@
+version: "3.1"
+
+services:
+
+  db:
+    container_name: database
+    image: postgres:14
+    env_file:
+      - ".env"
+    ports:
+      - 5432:5432
+    networks:
+      - botnet
+    volumes:
+      - ./postgres:/var/lib/postgresql
+
+  django:
+    container_name: admin_panel
+    build:
+      context: .
+    command: >
+      sh -c "python /app/manage.py makemigrations &&
+      python /app/manage.py migrate &&
+      python /app/manage.py runserver 0.0.0.0:8000 --noreload"
+    ports:
+      - 8000:8000
+    networks:
+      - botnet
+    env_file:
+      - ".env"
+    depends_on:
+      - db
+
+#  redis:
+#    image: redis:alpine
+#    env_file:
+#      - ".env"
+#    ports:
+#      - 6379:6379
+#    networks:
+#      - botnet
+
+  tgbot:
+    container_name: bot
+    build:
+      context: .
+    command: python /app/manage.py runbot
+
+    networks:
+      - botnet
+    env_file:
+      - ".env"
+    depends_on:
+      - db
+      - django
+#      - redis      - redis
+    volumes:
+      - .:/app
+
+networks:
+  botnet:
+    driver: bridge
