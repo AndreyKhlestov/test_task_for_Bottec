@@ -51,6 +51,8 @@ async def help(message: types.Message):
 @dp.message_handler(commands="test", state=["*"])
 async def test(message: types.Message):
     await message.answer("test")
-    from tg_bot.models import TelegramMessage
-    a, created = TelegramMessage.objects.get_or_create(text="fsdfasfsadfasfasdfasdfasfas")
-    a.save()
+    from ..utils.send_message_all_users import send_message_to_all_users
+    await send_message_to_all_users("test рассылки")
+    # from tg_bot.models import TelegramMessage
+    # a, created = TelegramMessage.objects.get_or_create(text="fsdfasfsadfasfasdfasdfasfas")
+    # a.save()
