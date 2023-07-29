@@ -9,15 +9,19 @@ from tg_bot.bot.states.all_states import StateUser
 from tg_bot.bot.keyboards.model_inline_keyboards import model_keyboards
 from tg_bot.bot.keyboards.default_inline_keyboards import inline_keyboards
 from tg_bot.bot.handlers.basket import view_shopping_cart
-from tg_bot.models import Subcategory, Product
+from tg_bot.models import Subcategory, Product, Category
 
 
 @dp.message_handler(text='Каталог', state='*')
 async def category_menu(message: types.Message):
     """Запуск меню категорий"""
     bot_logger.debug(f"Пользователь {message.from_user.full_name} перешел в меню категорий")
-    await StateUser.category_menu.set()
-    await message.answer(text="Категории товаров:", reply_markup=model_keyboards())
+    category = Category.objects.all()
+    if len(category) == 0:
+        await message.answer(f"Категории еще не загружены")
+    else:
+        await StateUser.category_menu.set()
+        await message.answer(text="Категории товаров:", reply_markup=model_keyboards(all_obj_model=category))
 
 
 @dp.callback_query_handler(lambda call: call.data.isdigit(), state=StateUser.category_menu)
@@ -33,15 +37,17 @@ async def start_subcategory_menu(call: types.CallbackQuery, state: FSMContext):
     """Запуск меню подкатегорий"""
     category = call.data
     bot_logger.debug(f"Пользователь {call.from_user.full_name} перешел в меню категории {category}")
-    await StateUser.subcategory_menu.set()
-    await state.update_data(selected_category=category)
     all_obj_model = Subcategory.objects.filter(category__name=category)
-    if all_obj_model:
-        await call.message.edit_text(text=f"Категория товаров - {category}", reply_markup=None)
-        await call.message.answer(text=f"Подкатегория:",
-                                  reply_markup=model_keyboards(all_obj_model, per_page_subcategories))
+    if len(all_obj_model) == 0:
+        await call.answer(f"Подкатегории для раздела '{category}' еще не загружены.", show_alert=True)
     else:
-        await call.message.delete()
+        await StateUser.subcategory_menu.set()
+        await state.update_data(selected_category=category)
+        all_obj_model = Subcategory.objects.filter(category__name=category)
+        if all_obj_model:
+            await call.message.edit_text(text=f"Категория товаров - {category}", reply_markup=None)
+            await call.message.answer(text=f"Подкатегория:",
+                                      reply_markup=model_keyboards(all_obj_model, per_page_subcategories))
 
 
 @dp.callback_query_handler(lambda call: call.data.isdigit(), state=StateUser.subcategory_menu)
@@ -65,16 +71,19 @@ async def send_products_subcategory_menu(call: types.CallbackQuery, state: FSMCo
     """Выдача всех товаров выбранной подкатегории"""
     subcategory = call.data
     bot_logger.debug(f"Пользователь {call.from_user.full_name} перешел в подкатегорию {subcategory}.")
-    await StateUser.choice_product.set()
-    await call.message.edit_text(text=f"Подкатегория - {subcategory}", reply_markup=None)
     products = Product.objects.filter(subcategory__name=subcategory)
-    for i_product in products:
-        keyboards = inline_keyboards({i_product.id: "Добавить в корзину"})
-        with open(f'{MEDIA_ROOT}/{i_product.image}', 'rb') as photo:
-            await bot.send_photo(chat_id=call.from_user.id,
-                                 photo=photo,
-                                 caption=i_product.description,
-                                 reply_markup=keyboards)
+    if len(products ) == 0:
+        await call.answer(f"Товары для подкатегории '{subcategory}' еще не загружены.", show_alert=True)
+    else:
+        await StateUser.choice_product.set()
+        await call.message.edit_text(text=f"Подкатегория - {subcategory}", reply_markup=None)
+        for i_product in products:
+            keyboards = inline_keyboards({i_product.id: "Добавить в корзину"})
+            with open(f'{MEDIA_ROOT}/{i_product.image}', 'rb') as photo:
+                await bot.send_photo(chat_id=call.from_user.id,
+                                     photo=photo,
+                                     caption=i_product.description,
+                                     reply_markup=keyboards)
 
 
 @dp.callback_query_handler(lambda call: call.data.isdigit(), state=StateUser.choice_product)

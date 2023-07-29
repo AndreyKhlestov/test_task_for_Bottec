@@ -30,15 +30,18 @@ services:
       - ".env"
     depends_on:
       - db
+    volumes:
+      - .:/app
 
-#  redis:
-#    image: redis:alpine
-#    env_file:
-#      - ".env"
-#    ports:
-#      - 6379:6379
-#    networks:
-#      - botnet
+  redis:
+    container_name: redis
+    image: redis:alpine
+    env_file:
+      - ".env"
+    ports:
+      - 6379:6379
+    networks:
+      - botnet
 
   tgbot:
     container_name: bot
@@ -53,7 +56,7 @@ services:
     depends_on:
       - db
       - django
-#      - redis      - redis
+      - redis
     volumes:
       - .:/app
 

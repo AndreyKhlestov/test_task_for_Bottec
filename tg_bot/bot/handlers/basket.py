@@ -135,6 +135,7 @@ async def process_pay(message: types.Message):
         order.payment_status = True
         order.save()
         await append_new_payments(order)
+        await message.answer(f"Скоро с вами свяжется наш менеджер для уточнения деталей заказа.")
 
     else:
         text = f"Сумма заказа не сходится с оплаченной суммой (вместо {order.total_cost} оплачено " \

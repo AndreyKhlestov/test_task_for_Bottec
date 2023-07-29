@@ -36,7 +36,7 @@
     
     После команды docker-compose up. Перейдите в контейнер admin_panel
     ```
-    sudo docker exec -it admin_panel bash
+    docker exec -it admin_panel bash
     ```
     
     И пропишите команду для создания супер пользователя:
