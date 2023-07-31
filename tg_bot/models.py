@@ -7,7 +7,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import asyncio
 
-from .bot.utils.send_message_all_users import send_message_to_all_users
 
 
 class Profile(models.Model):
@@ -153,8 +152,6 @@ class TelegramMessage(models.Model):
         verbose_name_plural = 'Рассылки'
 
     def save(self, *args, **kwargs):
-        # if not self.send_status:
-        #     asyncio.run(send_message_to_all_users(str(self.text)))
         if self.send_status and not self.end_date_time:
             self.end_date_time = timezone.now()
 

@@ -12,4 +12,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         bot_logger.info('Запуск бота')
+
+        #####################
+        import asyncio
+        from tg_bot.bot.utils.send_message_all_users import send_message_to_all_users
+        loop = asyncio.get_event_loop()
+        loop.create_task(send_message_to_all_users())
+        #####################
+
         executor.start_polling(dp, skip_updates=True)
